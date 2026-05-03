@@ -50,7 +50,6 @@ public class AuthServiceImpl implements IAuthService {
                     }
                 });
             } catch (Exception ignored) {
-                // La réparation est opportuniste : ne pas bloquer le démarrage.
             }
         }
     }

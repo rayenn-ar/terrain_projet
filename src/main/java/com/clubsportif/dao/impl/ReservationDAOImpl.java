@@ -37,7 +37,6 @@ public class ReservationDAOImpl implements IReservationDAO {
         r.setDureeHeures(rs.getInt("duree_heures"));
         r.setStatut(StatutReservation.valueOf(rs.getString("statut")));
         r.setMontantTotal(rs.getBigDecimal("montant_total"));
-        // Champs joints (présents dans toutes les requêtes via SELECT_FULL)
         r.setNomClient(rs.getString("nom_client"));
         r.setEmailClient(rs.getString("email"));
         r.setNomTerrain(rs.getString("nom_terrain"));

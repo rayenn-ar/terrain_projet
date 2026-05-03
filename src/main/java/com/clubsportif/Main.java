@@ -82,7 +82,6 @@ public class Main {
                     p.destroyForcibly();
                 }
             } catch (IOException ignored) {
-                // Pas critique si ça échoue, l'affichage sera sans couleurs
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }
