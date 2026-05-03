@@ -1,0 +1,58 @@
+@startuml 01_diagramme_cas_utilisation
+' ============================================================
+' IMAGE A GENERER : 01_diagramme_cas_utilisation.png
+' POSITION DANS LE RAPPORT : Chapitre 3 - Section 3.1
+' ============================================================
+
+skinparam usecase {
+  BackgroundColor #EFF6FF
+  BorderColor #1D4ED8
+  ArrowColor #1D4ED8
+  ActorBorderColor #0F172A
+  ActorFontSize 13
+  ActorBackgroundColor #DBEAFE
+}
+skinparam rectangle {
+  BackgroundColor #F8FAFC
+  BorderColor #1D4ED8
+  BorderThickness 2
+  RoundCorner 12
+}
+skinparam shadowing true
+skinparam defaultFontSize 12
+skinparam padding 8
+
+left to right direction
+
+actor "Client" as client
+actor "Administrateur" as admin
+
+rectangle "Système SportsPro" {
+  usecase "S'authentifier" as UC1
+  usecase "Consulter les terrains" as UC2
+  usecase "Réserver un terrain" as UC3
+  usecase "Consulter l'historique" as UC4
+  usecase "Annuler une réservation" as UC5
+  usecase "Gérer son profil" as UC6
+  usecase "Exporter en CSV" as UC7
+  usecase "Tableau de bord stats" as UC8
+  usecase "Gérer les terrains" as UC9
+  usecase "Gérer les utilisateurs" as UC10
+}
+
+client --> UC1
+client --> UC2
+client --> UC3
+client --> UC4
+client --> UC5
+client --> UC6
+client --> UC7
+
+admin --> UC1
+admin --> UC5
+admin --> UC7
+admin --> UC8
+admin --> UC9
+admin --> UC10
+
+@enduml

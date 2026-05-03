@@ -1,0 +1,72 @@
+@startuml 03_diagramme_sequence
+' ============================================================
+' IMAGE A GENERER : 03_diagramme_sequence.png
+' POSITION DANS LE RAPPORT : Chapitre 3 - Section 3.4
+' ============================================================
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 8
+skinparam sequence {
+  ActorBorderColor #1D4ED8
+  ActorBackgroundColor #EFF6FF
+  ParticipantBorderColor #1D4ED8
+  ParticipantBackgroundColor #EFF6FF
+  ParticipantFontSize 12
+  ArrowColor #1D4ED8
+  LifeLineBorderColor #94A3B8
+  BoxBackgroundColor #F8FAFC
+  BoxBorderColor #CBD5E1
+}
+skinparam shadowing true
+
+title Diagramme de Séquence — Réservation d'un terrain
+
+actor "Client" as client
+participant "ClientView" as view
+participant "ReservationService" as service
+participant "ReservationDAO" as dao
+database "MySQL" as db
+
+client -> view : Clic "Confirmer la réservation"
+activate view
+
+view -> service : creerReservation(idTerrain, date, heure, duree)
+activate service
+
+service -> service : valider(date, heure, duree)
+note right : Verifie plage 08h-23h\net duree 1-4h
+
+service -> dao : findByTerrainAndDate(idTerrain, date, CONFIRMEE)
+activate dao
+
+dao -> db : SELECT * FROM reservation\nWHERE id_terrain=? AND date=? AND statut='CONFIRMEE'
+activate db
+db --> dao : Liste des reservations existantes
+deactivate db
+
+dao --> service : List<Reservation>
+deactivate dao
+
+service -> service : verifier chevauchement\n[A < D ET C < B]
+
+alt Pas de conflit horaire
+  service -> service : calculer montant\n(prixParHeure x duree)
+  service -> dao : save(reservation)
+  activate dao
+  dao -> db : INSERT INTO reservation (...)
+  activate db
+  db --> dao : id genere
+  deactivate db
+  dao --> service : Reservation (avec id)
+  deactivate dao
+  service --> view : Reservation confirmee
+  view --> client : Dialog "Reservation confirmee !"
+else Conflit de creneau detecte
+  service --> view : ReservationConflictException
+  view --> client : Message d'erreur en rouge
+end
+
+deactivate service
+deactivate view
+
+@enduml

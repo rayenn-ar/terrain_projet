@@ -1,0 +1,94 @@
+@startuml 02_diagramme_classes
+' ============================================================
+' IMAGE A GENERER : 02_diagramme_classes.png
+' POSITION DANS LE RAPPORT : Chapitre 3 - Section 3.3
+' ============================================================
+
+skinparam classAttributeIconSize 0
+skinparam wrapWidth 250
+skinparam class {
+  BackgroundColor #EFF6FF
+  BorderColor #1D4ED8
+  ArrowColor #1D4ED8
+  HeaderBackgroundColor #1D4ED8
+  HeaderFontColor white
+  HeaderFontSize 13
+  FontSize 12
+}
+skinparam enum {
+  BackgroundColor #FEF9C3
+  BorderColor #CA8A04
+  HeaderBackgroundColor #CA8A04
+  HeaderFontColor white
+}
+skinparam shadowing true
+skinparam linetype ortho
+
+' ---- Enumerations ----
+
+enum Role {
+  ADMIN
+  CLIENT
+}
+
+enum TypeTerrain {
+  FOOTBALL
+  TENNIS
+  BASKETBALL
+  VOLLEYBALL
+}
+
+enum StatutReservation {
+  CONFIRMEE
+  ANNULEE
+  TERMINEE
+}
+
+' ---- Classes ----
+
+class Utilisateur {
+  - idUtilisateur : int
+  - nom : String
+  - email : String
+  - motDePasseHash : String
+  - role : Role
+  - dateInscription : LocalDateTime
+  --
+  + isAdmin() : boolean
+}
+
+class Terrain {
+  - idTerrain : int
+  - nom : String
+  - type : TypeTerrain
+  - prixParHeure : BigDecimal
+  - disponibilite : boolean
+  - description : String
+  --
+  + getPrixParHeure() : BigDecimal
+  + isDisponibilite() : boolean
+}
+
+class Reservation {
+  - idReservation : int
+  - idUtilisateur : int
+  - idTerrain : int
+  - dateReservation : LocalDate
+  - heureDebut : LocalTime
+  - dureeHeures : int
+  - statut : StatutReservation
+  - montantTotal : BigDecimal
+  --
+  + getHeureFin() : LocalTime
+}
+
+' ---- Relations ----
+
+Utilisateur "1" --> "0..*" Reservation : effectue >
+Terrain     "1" --> "0..*" Reservation : concerne >
+
+Utilisateur --> Role
+Terrain     --> TypeTerrain
+Reservation --> StatutReservation
+
+@enduml

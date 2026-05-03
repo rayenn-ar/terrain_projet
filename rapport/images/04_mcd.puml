@@ -1,0 +1,60 @@
+@startuml 04_mcd
+' ============================================================
+' IMAGE A GENERER : 04_mcd.png
+' POSITION DANS LE RAPPORT : Chapitre 6 - Section 6.1
+' ============================================================
+
+skinparam entity {
+  BackgroundColor #EFF6FF
+  BorderColor #1D4ED8
+  FontSize 13
+  HeaderBackgroundColor #1D4ED8
+  HeaderFontColor white
+}
+skinparam arrow {
+  Color #1D4ED8
+  Thickness 2
+}
+skinparam shadowing true
+skinparam roundcorner 8
+
+title Modele Conceptuel de Donnees (MCD) — club_sportif
+
+entity "UTILISATEUR" as user {
+  *id_utilisateur : INT (PK)
+  --
+  nom : VARCHAR(100)
+  email : VARCHAR(255) UNIQUE
+  mot_de_passe_hash : VARCHAR(255)
+  role : ENUM(ADMIN, CLIENT)
+  date_inscription : TIMESTAMP
+}
+
+entity "TERRAIN" as terrain {
+  *id_terrain : INT (PK)
+  --
+  nom : VARCHAR(100) UNIQUE
+  type : ENUM(FOOTBALL, TENNIS,\nBASKETBALL, VOLLEYBALL)
+  prix_par_heure : DECIMAL(10,2)
+  disponibilite : BOOLEAN
+  description : TEXT
+  date_ajout : TIMESTAMP
+}
+
+entity "RESERVATION" as resa {
+  *id_reservation : INT (PK)
+  --
+  #id_utilisateur : INT (FK)
+  #id_terrain : INT (FK)
+  date_reservation : DATE
+  heure_debut : TIME
+  duree_heures : INT (1..4)
+  statut : ENUM(CONFIRMEE,\nANNULEE, TERMINEE)
+  montant_total : DECIMAL(10,2)
+  date_creation : TIMESTAMP
+}
+
+user ||--o{ resa : "effectue\n(1,N)"
+terrain ||--o{ resa : "concerne\n(0,N)"
+
+@enduml

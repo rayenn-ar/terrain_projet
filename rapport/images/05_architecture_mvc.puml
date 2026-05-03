@@ -1,0 +1,38 @@
+@startuml 05_architecture_mvc
+' ============================================================
+' IMAGE A GENERER : 05_architecture_mvc.png
+' POSITION DANS LE RAPPORT : Chapitre 4 - Section 4.1
+' ============================================================
+
+skinparam rectangle {
+  FontSize 13
+  FontStyle bold
+  RoundCorner 10
+  BorderThickness 2
+  BorderColor #374151
+  Padding 14
+}
+skinparam arrow {
+  Color #374151
+  Thickness 2.5
+}
+skinparam shadowing true
+skinparam defaultTextAlignment center
+skinparam backgroundColor white
+
+title Architecture en couches — SportsPro
+
+rectangle "VUE  (View)\nLoginView  ·  ClientView  ·  AdminView  ·  UIHelper" as VUE #BFDBFE
+rectangle "CONTRÔLEUR\nAuthController  ·  TerrainController  ·  ReservationController" as CTRL #BBF7D0
+rectangle "SERVICE  (Logique métier)\nAuthServiceImpl  ·  TerrainServiceImpl  ·  ReservationServiceImpl" as SVC #FEF08A
+rectangle "DAO  (Accès aux données)\nUtilisateurDAOImpl  ·  TerrainDAOImpl  ·  ReservationDAOImpl" as DAO #FDBA74
+rectangle "MODÈLE\nUtilisateur  ·  Terrain  ·  Reservation\nRole  ·  TypeTerrain  ·  StatutReservation" as MODEL #FCA5A5
+rectangle "BASE DE DONNÉES\nMySQL 8.0  ·  club_sportif" as BDD #D1D5DB
+
+VUE   -down-> CTRL
+CTRL  -down-> SVC
+SVC   -down-> DAO
+DAO   -down-> MODEL
+MODEL -down-> BDD
+
+@enduml
